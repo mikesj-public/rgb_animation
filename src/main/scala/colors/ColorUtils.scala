@@ -27,27 +27,39 @@ object ColorUtils {
   }
   
   def getRandomColorList(numColors : Int) : List[Color] = {
-    val colors = getColorList(numColors)
+    val colors = getColorList(numColors, numColors, numColors)
+    random.shuffle(colors).toList
+  }
+
+  def getRandomColorList(rn : Int, gn : Int, bn : Int) : List[Color] = {
+    val colors = getColorList(rn, gn, bn)
     random.shuffle(colors).toList
   }
   
-  def getColorList(numColors : Int) : List[Color] = {
+  def getColorList(rn : Int, gn : Int, bn : Int) : List[Color] = {
     val colors =  new ListBuffer[Color]
     for {
-      r <- 0 until numColors
-      b <- 0 until numColors
-      g <- 0 until numColors      
+      r <- 0 until rn
+      g <- 0 until gn
+      b <- 0 until bn
     } yield {
       colors.+=(new Color(
-          (r * 255f / (numColors -1)).toInt, 
-          (g * 255f / (numColors -1)).toInt,
-          (b * 255f / (numColors -1)).toInt))
+          (r * 255f / (rn - 1)).toInt,
+          (g * 255f / (gn - 1)).toInt,
+          (b * 255f / (bn - 1)).toInt))
     }
     colors.toList
   }
-  
+
   def getColorListRankedByHue(numColors : Int) : List[Color] = {
-    val colors = getColorList(numColors)
+    val colors = getColorList(numColors, numColors, numColors)
+    colors.sortBy(_.getRGB())
+
+  }
+  
+  def getColorListRankedByHue(rn : Int, gn : Int, bn : Int) : List[Color] = {
+    val colors = getColorList(rn,gn,bn)
+
     colors.sortBy(_.getRGB())
     
   }
